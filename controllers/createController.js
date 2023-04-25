@@ -5,7 +5,7 @@ const FormData = require('form-data');
 const requestStructure = require('../utils/requestOptions/requestOptions');
 const { parseStringToStringArray } = require('../utils/requestParsers');
 const { stagedUploads, createProducts, createProduct } = require('../utils/graphqlRequests/mutations');
-const { eventDataStorage } = require('../utils/eventDataStorage');
+const { response } = require('express');
 class CreateController {
     async WriteData(req, res) {
         try {
@@ -69,18 +69,21 @@ class CreateController {
 
                     console.log(sendFileResponse);
 
-                    const BulkOperationResult = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args1(uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[3].value)))
+                    await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args1(uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[3].value)))
                     .then((response)=>{
                         return response.json();
+                    })
+                    .then((responseJson)=>{
+                        console.log(responseJson);
                     })
                     .catch((error) => {
                         console.log(error);
                       });
-                      const graphqlId = BulkOperationResult.data.bulkOperationRunMutation.bulkOperation.id;
-                      eventDataStorage.once(graphqlId,(reqBody)=>{res.status(200).json(reqBody);})
+                      res.status(200).json('Products were sent to Shopify');
                     }
                 } catch (e) {
-                    res.status(300).json(`Check the correctness of the data and input format. Error - ${JSON.stringify(e)}`)
+                    console.log(e);
+                    res.status(300).json(`Проверьте корректность данных и формат ввода. Ошибка - ${JSON.stringify(e)}`)
                 }
             }
             await fetchMutationUploadsCreate(stagedUploads(), createProducts);
