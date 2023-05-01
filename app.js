@@ -1,8 +1,8 @@
 require('dotenv').config();
-const port = process.env.PORT || 3000;
+const port    = process.env.PORT || 3000;
 const express = require('express');
-const app = express();
-const root = require('./routes/indexRouter');
+const app     = express();
+const root    = require('./routes/indexRouter');
 app.use(express.json());
 
 const start = async () => {

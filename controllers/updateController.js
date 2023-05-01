@@ -1,12 +1,13 @@
-const fetch = require('node-fetch');
-const fs = require('fs');
-const fsPromises = require('fs/promises');
-const FormData = require('form-data');
-const requestStructure = require('../utils/requestOptions/requestOptions');
-const { parseStringToStringArray } = require('../utils/requestParsers');
-const { getProduct, getProductByGUID } = require('../utils/graphqlRequests/queries');
+const fetch                                            = require('node-fetch');
+const fs                                               = require('fs');
+const fsPromises                                       = require('fs/promises');
+const FormData                                         = require('form-data');
+const requestStructure                                 = require('../utils/requestOptions/requestOptions');
+const { parseStringToStringArray }                     = require('../utils/requestParsers');
+const { getProduct, getProductByGUID }                 = require('../utils/graphqlRequests/queries');
+const { changeTags } = require('../utils/changeTags');
 const { stagedUploads, updateProduct, updateProducts } = require('../utils/graphqlRequests/mutations');
-const { eventDataStorage } = require('../utils/eventDataStorage');
+const { eventDataStorage }                             = require('../utils/eventDataStorage');
 class UpdateController {
     async AddToFileData(req, res) {
         try {
@@ -34,7 +35,7 @@ class UpdateController {
                     handle: req.body.handle,
                     vendor: req.body.vendor,
                     description: req.body.description,
-                    tags: req.body.tags,
+                    tags: changeTags(req.body.tags),
                     options: parseStringToStringArray(req.body.options),
                     variants: req.body.variants
                 });
@@ -63,7 +64,7 @@ class UpdateController {
                     handle: req.body.handle,
                     vendor: req.body.vendor,
                     description: req.body.description,
-                    tags: req.body.tags,
+                    tags: changeTags(req.body.tags),
                     options: parseStringToStringArray(req.body.options),
                     variants: req.body.variants
                 });

@@ -1,7 +1,7 @@
-const fetch = require('node-fetch');
-const requestStructure = require('../utils/requestOptions/requestOptions');
+const fetch                            = require('node-fetch');
+const requestStructure                 = require('../utils/requestOptions/requestOptions');
 const { getProduct, getProductByGUID } = require('../utils/graphqlRequests/queries');
-const { deleteProduct } = require('../utils/graphqlRequests/mutations');
+const { deleteProduct }                = require('../utils/graphqlRequests/mutations');
 class DeleteController {
     async DeleteData(req, res) {
         try {

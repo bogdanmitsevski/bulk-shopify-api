@@ -1,11 +1,12 @@
-const fetch = require('node-fetch');
-const fsPromises = require('fs/promises');
-const fs = require('fs');
-const FormData = require('form-data');
-const requestStructure = require('../utils/requestOptions/requestOptions');
-const { parseStringToStringArray } = require('../utils/requestParsers');
+const fetch                                            = require('node-fetch');
+const fsPromises                                       = require('fs/promises');
+const fs                                               = require('fs');
+const FormData                                         = require('form-data');
+const requestStructure                                 = require('../utils/requestOptions/requestOptions');
+const { parseStringToStringArray }                     = require('../utils/requestParsers');
 const { stagedUploads, createProducts, createProduct } = require('../utils/graphqlRequests/mutations');
-const { eventDataStorage } = require('../utils/eventDataStorage');
+const { eventDataStorage }                             = require('../utils/eventDataStorage');
+const { changeTags }                                   = require('../utils/changeTags');
 class CreateController {
     async WriteData(req, res) {
         try {
@@ -20,7 +21,7 @@ class CreateController {
                 handle: req.body.handle,
                 description: req.body.description || '',
                 vendor: req.body.vendor,
-                tags: req.body.tags,
+                tags: changeTags(req.body.tags),
                 options: parseStringToStringArray(req.body.options),
                 variants: req.body.variants
             });
