@@ -26,4 +26,20 @@ function getProductByGUID(reqDataGUID) {
   return getProductQueryByGUID;
 }
 
-module.exports = { getProduct, getProductByGUID };
+function getVariantById (reqData) {
+  const getVariantBySKU = `{
+    productVariants(first:1, query:"sku:${reqData}" ) {
+      edges {
+        node {
+          id
+          product {
+            id
+          }
+        }
+      }
+    }
+  }`;
+  return getVariantBySKU;
+}
+
+module.exports = { getProduct, getProductByGUID, getVariantById };

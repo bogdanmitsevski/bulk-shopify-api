@@ -1,7 +1,7 @@
 const fetch                            = require('node-fetch');
 const requestStructure                 = require('../utils/requestOptions/requestOptions');
 const { getProduct, getProductByGUID } = require('../utils/graphqlRequests/queries');
-const { deleteProduct }                = require('../utils/graphqlRequests/mutations');
+const { updateProductStatus }                = require('../utils/graphqlRequests/mutations');
 class DeleteController {
     async DeleteData(req, res) {
         try {
@@ -19,11 +19,11 @@ class DeleteController {
                         }
                     });
                 // отримання відповіді від Shopify API про видалений продукт
-                fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(deleteProduct(await globalData)))
+                fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(updateProductStatus(await globalData)))
                     .then(res => res.json())
                     .then(response => {
                         try {
-                            res.json(`Product with ID: ${JSON.stringify(response.data.productDelete.deletedProductId)} was successfully deleted`);
+                            res.json(`Product with ID: ${JSON.stringify(response.data.productUpdate.product.id)} was set as DRAFT`);
                         }
                         catch (e) {
                             if(!globalData)

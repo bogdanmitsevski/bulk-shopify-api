@@ -10,7 +10,7 @@ const apiKey = process.env.accessToken;
 const payload = {
   webhook: {
     topic: 'bulk_operations/finish',
-    address: 'https://b1f7-31-144-121-24.eu.ngrok.io/api/result',
+    address: 'https://b02b-188-163-37-38.eu.ngrok.io/api/result',
     format: 'json'
   }
 };

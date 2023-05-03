@@ -4,7 +4,7 @@ function createProduct(createProductData) {
 };
 
 function updateProduct(updateProductData) {
-  const updateMutation = `{"input": {"id":"${updateProductData.id}", "title": "${updateProductData.title}", "handle":"${updateProductData.handle}", "descriptionHtml":"${updateProductData.description}", "vendor":"${updateProductData.vendor}", "tags":"${updateProductData.tags}", "options":[${updateProductData.options}], "variants":${JSON.stringify(updateProductData.variants)}}}`;
+  const updateMutation = `{"input": {"id":"${updateProductData.id}", "status": "ACTIVE", "title": "${updateProductData.title}", "handle":"${updateProductData.handle}", "descriptionHtml":"${updateProductData.description}", "vendor":"${updateProductData.vendor}", "tags":"${updateProductData.tags}", "options":[${updateProductData.options}], "variants":${JSON.stringify(updateProductData.variants)}}}`;
   return updateMutation;
 }
 
@@ -74,15 +74,17 @@ function updateProducts(uploadUrl) {
   return updateProductsMutation.replace(/"(\w+)":/g, `$1:`);
 };
 
-function deleteProduct(id) {
-  const deleteMutation = `mutation {
-        productDelete(input: {id: ${id}}) {
-          deletedProductId
-        }
-      }`;
-  return deleteMutation;
+function updateProductStatus(id) {
+  const updateStatus = `mutation {
+    productUpdate(input: {id:${id}, status: DRAFT}) {
+      product {
+        id
+      }
+    }
+  }`;
+  return updateStatus;
 }
 
 
 
-module.exports = { createProduct, updateProduct, stagedUploads, createProducts, updateProducts, deleteProduct };
+module.exports = { createProduct, updateProduct, stagedUploads, createProducts, updateProducts, updateProductStatus };
