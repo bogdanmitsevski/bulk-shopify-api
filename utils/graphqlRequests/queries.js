@@ -3,12 +3,14 @@ function getProduct(reqData) {
         products (first:1, query:"sku:${reqData}") {
         edges {
           node {
-            id
+            id,
+            tags
           }
         }
       }
     }
     `;
+    console.log(getProductQuery);
     return getProductQuery;
 }
 
@@ -17,7 +19,8 @@ function getProductByGUID(reqDataGUID) {
       products (first:1, query:"tag:${reqDataGUID}") {
       edges {
         node {
-          id
+          id,
+          tags
         }
       }
     }

@@ -16,12 +16,38 @@ class CreateController {
                     req.body.variants[i].options[index] = value + '⁢'.repeat(i);
                 }
             }
+            let inputTags = (req.body.tags).split(',');
+            let staticTags = ['new', 'sale', 'NEW', 'SALE', 'New', 'Sale'];
+            let found = inputTags.filter(inputTag => staticTags.includes(inputTag));
+            let addTags;
+            if (found.length > 1) {
+                let findTagA = staticTags.find(tagsValue => inputTags.includes(tagsValue));
+                const updatedTags = req.body.tags.replace(findTagA, 'NEW');
+                let index = staticTags.indexOf(findTagA);
+                staticTags.splice(index, 1);
+                let findTagB = staticTags.find(tagsValue => inputTags.includes(tagsValue));
+                addTags = updatedTags.replace(findTagB, 'SALE');
+            }
+            else if (found.length === 1) {
+                let findSingleTag = staticTags.find(tagsValue => inputTags.includes(tagsValue));
+                console.log(findSingleTag);
+                if ((findSingleTag == 'new') || (findSingleTag == 'NEW') || (findSingleTag == 'New')) {
+                    addTags = req.body.tags.replace(findSingleTag, 'NEW');
+                }
+                else {
+                    addTags = req.body.tags.replace(findSingleTag, 'SALE');
+                }
+                console.log(addTags);
+            }
+            else {
+                addTags = req.body.tags;
+            }
             const getReqBodyData = () => ({
                 title: req.body.title,
                 handle: req.body.handle,
                 description: req.body.description || '',
                 vendor: req.body.vendor,
-                tags: changeTags(req.body.tags),
+                tags: changeTags(addTags),
                 options: parseStringToStringArray(req.body.options),
                 variants: req.body.variants
             });
@@ -57,28 +83,28 @@ class CreateController {
                     formData.append('success_action_status', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[1].value);
                     formData.append('file', fs.createReadStream('./CREATION.jsonl'));
 
-                    const file = await fsPromises.readFile('./CREATION.jsonl', {encoding: 'utf8'});
-                    if(file.length === 0) {
+                    const file = await fsPromises.readFile('./CREATION.jsonl', { encoding: 'utf8' });
+                    if (file.length === 0) {
                         res.status(300).json('File with products is empty');
-                      }
-                      else {
+                    }
+                    else {
 
-                    const sendFileResponse = await fetch('https://shopify-staged-uploads.storage.googleapis.com/', {
-                        method: 'POST',
-                        body: formData
-                    });
+                        const sendFileResponse = await fetch('https://shopify-staged-uploads.storage.googleapis.com/', {
+                            method: 'POST',
+                            body: formData
+                        });
 
-                    console.log(sendFileResponse);
+                        console.log(sendFileResponse);
 
-                    const BulkOperationResult = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args1(uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[3].value)))
-                    .then((response)=>{
-                        return response.json();
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                      });
-                      const graphqlId = BulkOperationResult.data.bulkOperationRunMutation.bulkOperation.id;
-                      eventDataStorage.once(graphqlId,(reqBody)=>{res.status(200).json(reqBody);})
+                        const BulkOperationResult = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args1(uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[3].value)))
+                            .then((response) => {
+                                return response.json();
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                        const graphqlId = BulkOperationResult.data.bulkOperationRunMutation.bulkOperation.id;
+                        eventDataStorage.once(graphqlId, (reqBody) => { res.status(200).json(reqBody); })
                     }
                 } catch (e) {
                     res.status(300).json(`Check the correctness of the data and input format. Error - ${JSON.stringify(e)}`)

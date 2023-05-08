@@ -1,10 +1,11 @@
 function createProduct(createProductData) {
-  const createMutation = `{"input": {"title":"${createProductData.title}", "handle":"${createProductData.handle}", "descriptionHtml":"${createProductData.description}", "vendor":"${createProductData.vendor}","tags":"${createProductData.tags}", "options":[${createProductData.options}], "variants":${JSON.stringify(createProductData.variants)}}}`;
+  const createMutation = `{"input": {"title":"${createProductData.title}", "published": true, "handle":"${createProductData.handle}", "descriptionHtml":"${createProductData.description}", "vendor":"${createProductData.vendor}","tags":"${createProductData.tags}", "options":[${createProductData.options}], "variants":${JSON.stringify(createProductData.variants)}}}`;
   return createMutation;
 };
 
 function updateProduct(updateProductData) {
-  const updateMutation = `{"input": {"id":"${updateProductData.id}", "status": "ACTIVE", "title": "${updateProductData.title}", "handle":"${updateProductData.handle}", "descriptionHtml":"${updateProductData.description}", "vendor":"${updateProductData.vendor}", "tags":"${updateProductData.tags}", "options":[${updateProductData.options}], "variants":${JSON.stringify(updateProductData.variants)}}}`;
+  const updateMutation = `{"input": {"id":"${updateProductData.id}", "status": "ACTIVE", "published": true, "title": "${updateProductData.title}", "handle":"${updateProductData.handle}", "descriptionHtml":"${updateProductData.description}", "vendor":"${updateProductData.vendor}", "tags":"${updateProductData.tags}", "options":[${updateProductData.options}], "variants":${JSON.stringify(updateProductData.variants)}}}`;
+  console.log(updateMutation);
   return updateMutation;
 }
 
