@@ -3,7 +3,7 @@ const { body } = require('express-validator');
 const createSchema = [
 
     body('title').notEmpty().withMessage('Добавьте название поля - title и обязательное значение'),
-    body('handle').notEmpty().withMessage('Добавьте название поля - handle и обязательное значение'),
+    //body('handle').notEmpty().withMessage('Добавьте название поля - handle и обязательное значение'),
     body('vendor').notEmpty().withMessage('Добавьте название поля - vendor и обязательное значение'),
     body('tags').notEmpty().withMessage('Добавьте название поля - tags и обязательное guid с 1С'),
     body('options').notEmpty().withMessage('Добавьте название поля - options и обязательное значение'),

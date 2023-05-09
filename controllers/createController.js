@@ -7,6 +7,7 @@ const { parseStringToStringArray }                     = require('../utils/reque
 const { stagedUploads, createProducts, createProduct } = require('../utils/graphqlRequests/mutations');
 const { eventDataStorage }                             = require('../utils/eventDataStorage');
 const { changeTags }                                   = require('../utils/changeTags');
+const { ParseHandle }                                  = require('../utils/handleParser');
 class CreateController {
     async WriteData(req, res) {
         try {
@@ -42,9 +43,10 @@ class CreateController {
             else {
                 addTags = req.body.tags;
             }
+
             const getReqBodyData = () => ({
                 title: req.body.title,
-                handle: req.body.handle,
+                handle: ParseHandle(req.body.title),
                 description: req.body.description || '',
                 vendor: req.body.vendor,
                 tags: changeTags(addTags),
