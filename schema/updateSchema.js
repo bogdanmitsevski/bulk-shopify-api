@@ -8,7 +8,6 @@ const updateSchema = [
     body('options').notEmpty().withMessage('Добавьте название поля - options и обязательное значение'),
     body('variants').notEmpty().withMessage('Добавьте название поля - variants и обязательное значение'),
     body(`variants.*.price`).notEmpty().withMessage('Добавьте название поля - price и обязательное значение'),
-    body(`variants.*.compareAtPrice`).exists().default('0.00').withMessage('Добавьте название поля - compareAtPrice'),
     body(`variants.*.inventoryQuantities.*.locationId`).notEmpty().withMessage('Добавьте название поля - locationId и обязательное значение'),
     body(`variants.*.inventoryQuantities.*.availableQuantity`).exists().default('0').withMessage('Добавьте название поля - avaliableQuantity'),
     body(`variants.*.inventoryItem.cost`).exists().default('0').withMessage('Добавьте название поля - cost'),

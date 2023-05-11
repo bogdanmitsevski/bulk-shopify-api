@@ -3,14 +3,14 @@ class WebhookController {
     async GetWebhookData (req, res) {
         try {
 
-const shopifyUrl = 'https://my-ship-test.myshopify.com/admin/api/2023-01/';
+const shopifyUrl = 'https://apitestforme.myshopify.com/admin/api/2023-01/';
 const endpoint = 'webhooks.json';
 const apiKey = process.env.accessToken;
 
 const payload = {
   webhook: {
     topic: 'bulk_operations/finish',
-    address: 'https://ce6f-188-163-37-38.eu.ngrok.io/api/result',
+    address: 'https://0c91-188-163-37-38.eu.ngrok.io/api/result',
     format: 'json'
   }
 };

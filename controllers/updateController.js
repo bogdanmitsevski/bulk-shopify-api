@@ -81,11 +81,10 @@ class UpdateController {
                             findTagB = '';
                         addTags = newTags + ',' + findTagB;
                     }
-                    //const FetchProductIdResult = await FetchProductId(getProduct(req.body.sku));
                     const data = updateProduct({
                         id: FetchProductIdResult,
+                        handle: (req.body.title.replace(/[ ]/g,'-')+'-').toLowerCase()+(req.body.handle).slice(1).slice(-5),
                         title: req.body.title,
-                        handle: req.body.handle,
                         vendor: req.body.vendor,
                         description: req.body.description,
                         tags: changeTags(addTags),
@@ -148,8 +147,8 @@ class UpdateController {
                     }
                     const data = updateProduct({
                         id: FetchProductIdResult,
+                        handle: (req.body.title.replace(/[ ]/g,'-')+'-').toLowerCase()+(req.body.handle).slice(1).slice(-5),
                         title: req.body.title,
-                        handle: req.body.handle,
                         vendor: req.body.vendor,
                         description: req.body.description,
                         tags: changeTags(addTags),

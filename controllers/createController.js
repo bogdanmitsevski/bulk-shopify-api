@@ -44,7 +44,7 @@ class CreateController {
             }
             const getReqBodyData = () => ({
                 title: req.body.title,
-                handle: req.body.handle,
+                handle: (req.body.title.replace(/[ ]/g,'-')+'-').toLowerCase()+(req.body.handle).slice(1).slice(-5),
                 description: req.body.description || '',
                 vendor: req.body.vendor,
                 tags: changeTags(addTags),

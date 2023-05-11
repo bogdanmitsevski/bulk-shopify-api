@@ -4,7 +4,7 @@ function createProduct(createProductData) {
 };
 
 function updateProduct(updateProductData) {
-  const updateMutation = `{"input": {"id":"${updateProductData.id}", "status": "ACTIVE", "published": true, "title": "${updateProductData.title}", "handle":"${updateProductData.handle}", "descriptionHtml":"${updateProductData.description}", "vendor":"${updateProductData.vendor}", "tags":"${updateProductData.tags}", "options":[${updateProductData.options}], "variants":${JSON.stringify(updateProductData.variants)}}}`;
+  const updateMutation = `{"input": {"id":"${updateProductData.id}", "status": "ACTIVE", "published": true, "handle":"${updateProductData.handle}", "title": "${updateProductData.title}", "descriptionHtml":"${updateProductData.description}", "vendor":"${updateProductData.vendor}", "tags":"${updateProductData.tags}", "options":[${updateProductData.options}], "variants":${JSON.stringify(updateProductData.variants)}}}`;
   console.log(updateMutation);
   return updateMutation;
 }
