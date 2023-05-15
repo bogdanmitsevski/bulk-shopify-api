@@ -5,10 +5,12 @@ const updateRouter  = require('./updateRouter');
 const deleteRouter  = require('./deleteRouter');
 const webhookRouter = require('./webhookRouter');
 const resultRouter  = require('./resultRouter');
+const checkRouter   = require('./checkRouter');
 router.use('/', createRouter);
 router.use('/', updateRouter);
 router.use('/', deleteRouter);
 router.use('/', webhookRouter);
 router.use('/', resultRouter);
+router.use('/', checkRouter);
 
 module.exports = router;

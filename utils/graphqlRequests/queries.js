@@ -10,7 +10,6 @@ function getProduct(reqData) {
       }
     }
     `;
-    console.log(getProductQuery);
     return getProductQuery;
 }
 
