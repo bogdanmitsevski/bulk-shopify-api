@@ -64,7 +64,6 @@ function getProductInfo() {
                       variants {
         edges {
           node {
-            id,
             title,
             price,
             sku,
@@ -98,7 +97,6 @@ function getProductInfo() {
     }
   }
   `;
-  console.log(getProductInformation);
   return getProductInformation;
 }
 
@@ -113,7 +111,6 @@ function getBulkOperationId (bulkId) {
     }
   }
   `;
-  console.log(BulkOperationId);
   return BulkOperationId;
 }
 

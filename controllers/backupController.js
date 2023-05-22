@@ -3,6 +3,7 @@ const fs                                     = require('fs');
 const fetch                                  = require('node-fetch');
 const requestStructure                       = require('../utils/requestOptions/requestOptions');
 const { getProductInfo, getBulkOperationId } = require('../utils/graphqlRequests/queries');
+const { changeExtension }                    = require('../utils/converter/jsonl2json');
 
 class BackupController {
     async ProductsBackup(req, res) {
@@ -15,7 +16,6 @@ class BackupController {
                     .catch((error) => {
                         console.log(error);
                     });
-                console.log(BulkOperationId.data);
                 const timeOutAction = () => {
                     return new Promise((resolve, reject) => {
                         setTimeout(async () => {
@@ -38,11 +38,13 @@ class BackupController {
                     file.on("finish", () => {
                     file.close();
                     console.log("Download Completed");
+                    changeExtension();
                     });
                     });
                 };
 
-                runPromise();
+                await runPromise();
+                //await changeExtension();
 
             }
             catch (e) {
