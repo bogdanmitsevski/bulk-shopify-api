@@ -1,5 +1,5 @@
 function getProduct(reqData) {
-    const getProductQuery = `{
+  const getProductQuery = `{
         products (first:1, query:"sku:${reqData}") {
         edges {
           node {
@@ -10,7 +10,7 @@ function getProduct(reqData) {
       }
     }
     `;
-    return getProductQuery;
+  return getProductQuery;
 }
 
 function getProductByGUID(reqDataGUID) {
@@ -28,7 +28,7 @@ function getProductByGUID(reqDataGUID) {
   return getProductQueryByGUID;
 }
 
-function getVariantById (reqData) {
+function getVariantById(reqData) {
   const getVariantBySKU = `{
     productVariants(first:1, query:"sku:${reqData}" ) {
       edges {
@@ -44,4 +44,77 @@ function getVariantById (reqData) {
   return getVariantBySKU;
 }
 
-module.exports = { getProduct, getProductByGUID, getVariantById };
+function getProductInfo() {
+  let getProductInformation = `mutation {
+    bulkOperationRunQuery(
+      query: """
+          {
+          products {
+              edges {
+                  node {
+                      id,
+                      handle,
+                      title,
+                      tags,
+                      vendor,
+                      descriptionHtml,
+                      options {
+                      name
+                        },
+                      variants {
+        edges {
+          node {
+            id,
+            title,
+            price,
+            sku,
+            barcode,
+          }
+        }
+      },
+                      metafields {
+                          edges {
+                              node {
+                                  namespace
+                                  key
+                                  value
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+      """
+    ) {
+      bulkOperation {
+        id
+        status
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+  `;
+  console.log(getProductInformation);
+  return getProductInformation;
+}
+
+function getBulkOperationId (bulkId) {
+  const BulkOperationId = `
+  query {
+    node(id: "${bulkId}") {
+      ... on BulkOperation {
+        url
+        partialDataUrl
+      }
+    }
+  }
+  `;
+  console.log(BulkOperationId);
+  return BulkOperationId;
+}
+
+module.exports = { getProduct, getProductByGUID, getVariantById, getProductInfo, getBulkOperationId };
