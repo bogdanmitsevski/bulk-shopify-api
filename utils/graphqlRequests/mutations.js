@@ -9,6 +9,11 @@ function updateProduct(updateProductData) {
   return updateMutation;
 }
 
+function updateMetafields(updateMetafieldData) {
+  const updateMetafieldMutation = `{"input":{"id":"${updateMetafieldData.id}", "metafields":${JSON.stringify(updateMetafieldData.metafields).replaceAll(/\\/g, "").replaceAll('","',',').replaceAll('"{','{').replaceAll('}"','}')}}}`;
+  return updateMetafieldMutation;
+}
+
 function stagedUploads() {
   const uploadsMutation = `mutation {
         stagedUploadsCreate(input:{
@@ -75,6 +80,26 @@ function updateProducts(uploadUrl) {
   return updateProductsMutation.replace(/"(\w+)":/g, `$1:`);
 };
 
+function updateVariants(uploadUrl) {
+  const updateVariantsMutation = `mutation {
+      bulkOperationRunMutation(
+        mutation: "mutation call($input: ProductVariantInput!) { productVariantUpdate(input: $input) { product {id title variants(first: 10) {edges {node {id title inventoryQuantity }}}} userErrors { message field } } }",
+        stagedUploadPath: "${uploadUrl}") {
+        bulkOperation {
+          id
+          url
+          status
+        }
+        userErrors {
+          message
+          field
+        }
+      }
+    }
+    `;
+  return updateVariantsMutation.replace(/"(\w+)":/g, `$1:`);
+};
+
 function updateProductStatus(id) {
   const updateStatus = `mutation {
     productUpdate(input: {id:${id}, status: DRAFT}) {
@@ -88,4 +113,4 @@ function updateProductStatus(id) {
 
 
 
-module.exports = { createProduct, updateProduct, stagedUploads, createProducts, updateProducts, updateProductStatus };
+module.exports = { createProduct, updateProduct, stagedUploads, createProducts, updateProducts, updateVariants, updateProductStatus, updateMetafields };

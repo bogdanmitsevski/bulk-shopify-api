@@ -13,6 +13,35 @@ function getProduct(reqData) {
   return getProductQuery;
 }
 
+function getProductVariantBySKU(sku) {
+  const getVariantQuery = `{
+    productVariants (first:1, query:"sku:${sku}") {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+}
+  `;
+  return getVariantQuery;
+}
+
+function getProductByHandle (handle) {
+  const getProductQueryByHandle = `{
+    products (first:1, query:"${handle}") {
+    edges {
+      node {
+        id
+      }
+    }
+  }
+}
+`;
+console.log(getProductQueryByHandle);
+return getProductQueryByHandle;
+}
+ 
 function getProductByGUID(reqDataGUID) {
   const getProductQueryByGUID = `{
       products (first:1, query:"tag:${reqDataGUID}") {
@@ -58,28 +87,32 @@ function getProductInfo() {
                       tags,
                       vendor,
                       descriptionHtml,
+                      productType,
                       options {
-                      name
+                      name,
+                      values
                         },
                       variants {
         edges {
           node {
             title,
+            selectedOptions {
+              name,
+              value
+            }
             price,
+            compareAtPrice,
             sku,
             barcode,
+            inventoryQuantity,
+      			inventoryItem {
+            unitCost {
+              amount
+            }
+        }
           }
         }
-      },
-                      metafields {
-                          edges {
-                              node {
-                                  namespace
-                                  key
-                                  value
-                              }
-                          }
-                      }
+      }
                   }
               }
           }
@@ -114,4 +147,53 @@ function getBulkOperationId (bulkId) {
   return BulkOperationId;
 }
 
-module.exports = { getProduct, getProductByGUID, getVariantById, getProductInfo, getBulkOperationId };
+function getMetafields () {
+  const getMetafieldsInformation = `
+  mutation {
+    bulkOperationRunQuery(
+     query: """
+      {
+        products {
+          edges {
+            node {
+              id
+              handle
+              metafields {
+                edges {
+                  node {
+                    id
+                    namespace
+                    key
+                    value
+                  }
+                }
+              }
+              variants {
+                edges {
+                  node {
+                    id,
+                    sku
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      """
+    ) {
+      bulkOperation {
+        id
+        status
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+  `;
+  return getMetafieldsInformation;
+}
+
+module.exports = { getProduct, getProductVariantBySKU, getProductByHandle, getProductByGUID, getVariantById, getProductInfo, getBulkOperationId, getMetafields };
