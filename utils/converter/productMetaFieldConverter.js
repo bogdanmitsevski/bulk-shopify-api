@@ -20,9 +20,9 @@ const fetchMutationProductMetafieldsUpdate = async (args, args1) => {
         formData.append('policy', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[8].value);
         formData.append('Content-Type', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[0].value);
         formData.append('success_action_status', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[1].value);
-        formData.append('file', await fsPromises.readFile('./PRODUCT-METAFIELDS.jsonl'));
+        formData.append('file', await fsPromises.readFile('./resultData/PRODUCT-METAFIELDS.jsonl'));
 
-        const file = await fsPromises.readFile('./PRODUCT-METAFIELDS.jsonl', { encoding: 'utf8' });
+        const file = await fsPromises.readFile('./resultData/PRODUCT-METAFIELDS.jsonl', { encoding: 'utf8' });
         if (file.length === 0) {
             console.log('File with products is empty');
         }
@@ -58,13 +58,12 @@ const FetchProductByHandle = async (args) => {
     }
 }
 async function convertProductMetafields() {
-    const productString = await fsPromises.readFile('/Users/Bogdan/Desktop/writeFile/METAFIELDS.jsonl', 'utf-8');
+    const productString = await fsPromises.readFile('/Users/Bogdan/Desktop/writeFile/resultData/METAFIELDS.jsonl', 'utf-8');
     let jsonString = `[ ${productString.split(/\n/).toString().replace(/\,(?!\s*?[\{\[\"\'\w])/g, '')} ]`;
     let parsedString = JSON.parse(jsonString);
     let currentProductId;
     let productMetafieldsArray = [];
     for (let i = 0; i < parsedString.length; i++) {
-        console.log(parsedString[i]);
         if (Object.keys(parsedString[i]).length === 3 || Object.keys(parsedString[i]).length === 6) { //here
             continue;
         }
@@ -90,7 +89,6 @@ async function convertProductMetafields() {
                     }
 
                 }
-                console.log(1);
                 const followObj = parsedString[i + 1];
                 if (!followObj || Object.keys(followObj).length === 2 || Object.keys(followObj).length === 3 || productMetafieldsArray.length > 0) {
                     const getProductMetafieldData = () => ({
@@ -99,9 +97,7 @@ async function convertProductMetafields() {
                     });
 
                     let data = updateMetafields(getProductMetafieldData());
-                    console.log(2);
-                    await fsPromises.appendFile('PRODUCT-METAFIELDS.jsonl', data.toString() + '\n')
-                    console.log(3);
+                    await fsPromises.appendFile('resultData/PRODUCT-METAFIELDS.jsonl', data.toString() + '\n')
                     console.log('Product was added');
                     productMetafieldsArray = [];
                 }
@@ -109,7 +105,7 @@ async function convertProductMetafields() {
         }
     }
     //await fetchMutationProductMetafieldsUpdate(stagedUploads(), updateProducts);
-    //await fsPromises.writeFile('PRODUCT-METAFIELDS.jsonl', '')
+    //await fsPromises.writeFile('resultData/PRODUCT-METAFIELDS.jsonl', '')
 
 }
 

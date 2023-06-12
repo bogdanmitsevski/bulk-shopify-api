@@ -1,4 +1,6 @@
-handle,title,Tags,vendor,description,Type,Option1 Name,Option1 Value,Option2 Name,Option2 Value,Option3 Name,Option3 Value,Variant SKU,Variant Grams,Variant Price,Variant Compare At Price,Variant Barcode,__parentId
-best-shorts,Best Shorts1,shorts,My Store,Best Shorts,shorts,Size,45,Color,Black,,,123456,,100,150,QWERTY123
-best-shorts,,,,,,,46,,White,,,1234567,,100,150,QWERTY124
-best-shorts,,,,,,,47,,Gold,,,12345678,,100,150,QWERTY125
+handle,title,Tags,vendor,description,Type,Option1 Name,Option1 Value,Option2 Name,Option2 Value,Option3 Name,Option3 Value,Variant SKU,Variant Grams,Variant Price,Variant Compare At Price,Variant Barcode,Image src
+best-shorts232,Best Shorts1,shorts,My Store,Best Shorts,shorts,Size,45,Color,Black,,,123456,,100,150,QWERTY123
+best-shorts232,,,,,,,46,,White,,,1234567,,100,150,QWERTY124
+best-shorts232,,,,,,,47,,Gold,,,12345678,,100,150,QWERTY125
+best-shorts232,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0734/7342/5694/files/w211_4.jpg?v=1686145116
+best-shorts232,,,,,,,,,,,,,,,,,https://cdn.shopify.com/s/files/1/0734/7342/5694/files/w211_3.jpg?v=1686145116

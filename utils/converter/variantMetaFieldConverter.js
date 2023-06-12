@@ -20,9 +20,9 @@ const fetchMutationVariantMetafieldsUpdate = async (args, args1) => {
         formData.append('policy', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[8].value);
         formData.append('Content-Type', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[0].value);
         formData.append('success_action_status', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[1].value);
-        formData.append('file', await fsPromises.readFile('./VARIANT-METAFIELDS.jsonl'));
+        formData.append('file', await fsPromises.readFile('.resultData/VARIANT-METAFIELDS.jsonl'));
 
-        const file = await fsPromises.readFile('./VARIANT-METAFIELDS.jsonl', { encoding: 'utf8' });
+        const file = await fsPromises.readFile('.resultData/VARIANT-METAFIELDS.jsonl', { encoding: 'utf8' });
         if (file.length === 0) {
             console.log('File with products is empty');
         }
@@ -59,7 +59,7 @@ const FetchProductVariantBySKU = async (args) => {
 }
 
 async function convertVariantMetafields() {
-    const variantString = await fsPromises.readFile('/Users/Bogdan/Desktop/writeFile/METAFIELDS.jsonl', 'utf-8');
+    const variantString = await fsPromises.readFile('/Users/Bogdan/Desktop/writeFile/resultData/METAFIELDS.jsonl', 'utf-8');
     let jsonString = `[ ${variantString.split(/\n/).toString().replace(/\,(?!\s*?[\{\[\"\'\w])/g, '')} ]`;
     let parsedString = JSON.parse(jsonString);
     let currentVariantId;
@@ -100,7 +100,7 @@ async function convertVariantMetafields() {
 
                     let data = updateMetafields(getVariantMetafieldData());
                     console.log(2);
-                    await fsPromises.appendFile('VARIANT-METAFIELDS.jsonl', data.toString() + '\n')
+                    await fsPromises.appendFile('resultData/VARIANT-METAFIELDS.jsonl', data.toString() + '\n')
                     console.log(3);
                     console.log('Variant Metafield was added');
                     variantMetafieldsArray = [];
@@ -109,7 +109,7 @@ async function convertVariantMetafields() {
         }
     }
     //await fetchMutationVariantMetafieldsUpdate(stagedUploads(), updateProducts);
-    //await fsPromises.writeFile('VARIANT-METAFIELDS.jsonl', '');
+    //await fsPromises.writeFile('resultData/VARIANT-METAFIELDS.jsonl', '');
 
 }
 

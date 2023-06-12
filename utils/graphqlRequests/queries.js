@@ -27,7 +27,7 @@ function getProductVariantBySKU(sku) {
   return getVariantQuery;
 }
 
-function getProductByHandle (handle) {
+function getProductByHandle(handle) {
   const getProductQueryByHandle = `{
     products (first:1, query:"${handle}") {
     edges {
@@ -38,10 +38,10 @@ function getProductByHandle (handle) {
   }
 }
 `;
-console.log(getProductQueryByHandle);
-return getProductQueryByHandle;
+  console.log(getProductQueryByHandle);
+  return getProductQueryByHandle;
 }
- 
+
 function getProductByGUID(reqDataGUID) {
   const getProductQueryByGUID = `{
       products (first:1, query:"tag:${reqDataGUID}") {
@@ -78,7 +78,7 @@ function getProductInfo() {
     bulkOperationRunQuery(
       query: """
           {
-          products {
+          products (first:1, query:"sku:151615fddf463578") {
               edges {
                   node {
                       id,
@@ -99,7 +99,7 @@ function getProductInfo() {
             selectedOptions {
               name,
               value
-            }
+            },
             price,
             compareAtPrice,
             sku,
@@ -109,7 +109,19 @@ function getProductInfo() {
             unitCost {
               amount
             }
+        },
+          }
         }
+      }
+      media {
+        edges {
+          node {
+            preview {
+              image {
+                url,
+                altText
+              }
+            }
           }
         }
       }
@@ -133,7 +145,70 @@ function getProductInfo() {
   return getProductInformation;
 }
 
-function getBulkOperationId (bulkId) {
+function getInventoryInfo() {
+  const productInventory = `
+  mutation {
+    bulkOperationRunQuery(
+      query: """
+      {
+        products {
+          edges {
+            node {
+              id,
+              handle,
+              title
+              variants {
+                edges {
+                  node {
+                    id,
+                    title,
+                    selectedOptions {
+                      name,
+                      value
+                    }
+                    sku,
+                    inventoryItem {
+                      harmonizedSystemCode,
+                      countryCodeOfOrigin,
+                      inventoryLevels(first: 5) {
+                        edges {
+                          node {
+                            quantities(names: ["on_hand"]) {
+                              name,
+                              quantity
+                            }
+                            location {
+                              name
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      """
+    ) {
+      bulkOperation {
+        id
+        status
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+  `;
+
+  return productInventory;
+};
+
+function getBulkOperationId(bulkId) {
   const BulkOperationId = `
   query {
     node(id: "${bulkId}") {
@@ -147,7 +222,7 @@ function getBulkOperationId (bulkId) {
   return BulkOperationId;
 }
 
-function getMetafields () {
+function getMetafields() {
   const getMetafieldsInformation = `
   mutation {
     bulkOperationRunQuery(
@@ -196,4 +271,65 @@ function getMetafields () {
   return getMetafieldsInformation;
 }
 
-module.exports = { getProduct, getProductVariantBySKU, getProductByHandle, getProductByGUID, getVariantById, getProductInfo, getBulkOperationId, getMetafields };
+function getMedia() {
+  const getAllMedia = `
+  mutation {
+    bulkOperationRunQuery(
+      query: """
+      query GetProductAndVariantMedia {
+        products {
+          edges {
+            node {
+              id
+              media {
+                edges {
+                  node {
+                    mediaContentType
+                    preview {
+                      image {
+                        url
+                      }
+                    }
+                  }
+                }
+              }
+              variants {
+                edges {
+                  node {
+                    id
+                    media {
+                      edges {
+                        node {
+                          mediaContentType
+                          preview {
+                            image {
+                              url
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      """
+    ) {
+      bulkOperation {
+        id
+        status
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+  `;
+  return getAllMedia;
+}
+
+module.exports = { getProduct, getProductVariantBySKU, getProductByHandle, getProductByGUID, getVariantById, getProductInfo, getBulkOperationId, getMetafields, getMedia, getInventoryInfo };

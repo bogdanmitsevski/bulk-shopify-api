@@ -6,8 +6,7 @@ const { convertProductMetafields } = require('./converter/productMetaFieldConver
 const { convertVariantMetafields } = require('./converter/variantMetaFieldConverter');
 const GetMetafields = async (bulkMutation, bulkId) => {
     try {
-        let url = process.env.shopUrl + `/admin/api/2023-01/graphql.json`;
-        const BulkOperationId = await fetch(`https://my-ship-test.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkMutation))
+        const BulkOperationId = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkMutation))
             .then((response) => {
                 return response.json();
             })
@@ -16,17 +15,15 @@ const GetMetafields = async (bulkMutation, bulkId) => {
             });
         console.log(BulkOperationId.data);
         const timeOutAction = () => {
-            console.log(3);
             return new Promise((resolve, reject) => {
                 let getLinkInterval = setInterval(async () => {
-                    const BulkOperationLink = await fetch(`https://my-ship-test.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkId(BulkOperationId.data.bulkOperationRunQuery.bulkOperation.id)))
+                    const BulkOperationLink = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkId(BulkOperationId.data.bulkOperationRunQuery.bulkOperation.id)))
                         .then((response) => {
                             return response.json();
                         })
                         .catch((error) => {
                             console.log(error);
                         });
-                    console.log(1, BulkOperationLink);
                     try {
                         if (BulkOperationLink.data.node.url) {
                             resolve(BulkOperationLink.data.node.url);
@@ -44,8 +41,7 @@ const GetMetafields = async (bulkMutation, bulkId) => {
         }
         const runPromise = async () => {
             console.log('Waiting for status');
-            const file = fs.createWriteStream("METAFIELDS.jsonl");
-            console.log(4);
+            const file = fs.createWriteStream("resultData/METAFIELDS.jsonl");
             https.get(await timeOutAction(), function (response) {
                 response.pipe(file);
                 file.on("finish", () => {

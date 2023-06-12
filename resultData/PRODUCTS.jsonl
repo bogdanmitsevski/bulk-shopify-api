@@ -1,0 +1,13 @@
+{"id":"gid:\/\/shopify\/Product\/8385099006238","handle":"best-shorts232","title":"Best Shorts1"}
+{"id":"gid:\/\/shopify\/ProductVariant\/45448671297822","title":"45 \/ Black","selectedOptions":[{"name":"Size","value":"45"},{"name":"Color","value":"Black"}],"sku":"123456","inventoryItem":{"harmonizedSystemCode":null,"countryCodeOfOrigin":null},"__parentId":"gid:\/\/shopify\/Product\/8385099006238"}
+{"quantities":[{"name":"on_hand","quantity":100}],"location":{"name":"Independence Towers"},"__parentId":"gid:\/\/shopify\/ProductVariant\/45448671297822"}
+{"quantities":[{"name":"on_hand","quantity":101}],"location":{"name":"Location2"},"__parentId":"gid:\/\/shopify\/ProductVariant\/45448671297822"}
+{"quantities":[{"name":"on_hand","quantity":102}],"location":{"name":"Location3"},"__parentId":"gid:\/\/shopify\/ProductVariant\/45448671297822"}
+{"id":"gid:\/\/shopify\/ProductVariant\/45448671330590","title":"46 \/ White","selectedOptions":[{"name":"Size","value":"46"},{"name":"Color","value":"White"}],"sku":"1234567","inventoryItem":{"harmonizedSystemCode":null,"countryCodeOfOrigin":null},"__parentId":"gid:\/\/shopify\/Product\/8385099006238"}
+{"quantities":[{"name":"on_hand","quantity":200}],"location":{"name":"Independence Towers"},"__parentId":"gid:\/\/shopify\/ProductVariant\/45448671330590"}
+{"quantities":[{"name":"on_hand","quantity":201}],"location":{"name":"Location2"},"__parentId":"gid:\/\/shopify\/ProductVariant\/45448671330590"}
+{"quantities":[{"name":"on_hand","quantity":202}],"location":{"name":"Location3"},"__parentId":"gid:\/\/shopify\/ProductVariant\/45448671330590"}
+{"id":"gid:\/\/shopify\/ProductVariant\/45448671363358","title":"47 \/ Gold","selectedOptions":[{"name":"Size","value":"47"},{"name":"Color","value":"Gold"}],"sku":"12345678","inventoryItem":{"harmonizedSystemCode":null,"countryCodeOfOrigin":null},"__parentId":"gid:\/\/shopify\/Product\/8385099006238"}
+{"quantities":[{"name":"on_hand","quantity":300}],"location":{"name":"Independence Towers"},"__parentId":"gid:\/\/shopify\/ProductVariant\/45448671363358"}
+{"quantities":[{"name":"on_hand","quantity":301}],"location":{"name":"Location2"},"__parentId":"gid:\/\/shopify\/ProductVariant\/45448671363358"}
+{"quantities":[{"name":"on_hand","quantity":302}],"location":{"name":"Location3"},"__parentId":"gid:\/\/shopify\/ProductVariant\/45448671363358"}
