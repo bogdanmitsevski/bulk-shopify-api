@@ -78,7 +78,7 @@ function getProductInfo() {
     bulkOperationRunQuery(
       query: """
           {
-          products (first:1, query:"sku:151615fddf463578") {
+          products {
               edges {
                   node {
                       id,
@@ -88,6 +88,7 @@ function getProductInfo() {
                       vendor,
                       descriptionHtml,
                       productType,
+                      status,
                       options {
                       name,
                       values
@@ -104,7 +105,6 @@ function getProductInfo() {
             compareAtPrice,
             sku,
             barcode,
-            inventoryQuantity,
       			inventoryItem {
             unitCost {
               amount
@@ -151,7 +151,7 @@ function getInventoryInfo() {
     bulkOperationRunQuery(
       query: """
       {
-        products {
+        products (first:1, query:"sku:151615fddf463578") {
           edges {
             node {
               id,

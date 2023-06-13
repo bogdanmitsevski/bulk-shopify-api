@@ -11,13 +11,13 @@ const { eventDataStorage }                             = require('../utils/event
 class UpdateController {
     async AddToFileData(req, res) {
         try {
-            for (let i = 0; i < req.body.variants.length; i++) {
+            for (let i = 0; i < req.body.variants.length; i++) {  // add variants with same names
                 for (const value of req.body.variants[i].options) {
                     const index = req.body.variants[i].options.indexOf(value);
                     req.body.variants[i].options[index] = value + '⁢'.repeat(i);
                 }
             }
-            const FetchProductId = async (args) => {
+            const FetchProductId = async (args) => { //get product id
                 try {
                     const FindProductId = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args))
                         .then(res => res.json())
@@ -27,7 +27,7 @@ class UpdateController {
                     console.log(`Check the correctness of the data and input format. Error - ${JSON.stringify(e)}`)
                 }
             }
-            const FetchProducTags = async (args) => {
+            const FetchProducTags = async (args) => { //get product tags by product id
                 try {
                     const FindProductTags = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args))
                         .then(res => res.json())
@@ -37,7 +37,7 @@ class UpdateController {
                     console.log(`Check the correctness of the data and input format. Error - ${JSON.stringify(e)}`)
                 }
             }
-            let staticTags = ['new', 'sale', 'NEW', 'SALE', 'New', 'Sale'];
+            let staticTags = ['new', 'sale', 'NEW', 'SALE', 'New', 'Sale']; //save this tags after tag update
             if (req.body.sku) {
                 const FetchProductIdResult = await FetchProductId(getProduct(req.body.sku));
                 const productTags = await FetchProducTags(getProduct(req.body.sku));
@@ -81,7 +81,7 @@ class UpdateController {
                             findTagB = '';
                         addTags = newTags + ',' + findTagB;
                     }
-                    const data = updateProduct({
+                    const data = updateProduct({  //get product info for update
                         id: FetchProductIdResult,
                         handle: (req.body.title.replace(/[ ]/g,'-')+'-').toLowerCase()+(req.body.handle).slice(1).slice(-5),
                         title: req.body.title,
@@ -93,7 +93,7 @@ class UpdateController {
                     });
 
 
-                    fs.appendFile('UPDATE.jsonl', data.toString() + '\n', (err) => {
+                    fs.appendFile('UPDATE.jsonl', data.toString() + '\n', (err) => { //add to file
                         if (err)
                             throw err;
                         else
@@ -104,7 +104,7 @@ class UpdateController {
             }
 
             else {
-                const FetchProductIdResult = await FetchProductId(getProductByGUID(req.body.guid));
+                const FetchProductIdResult = await FetchProductId(getProductByGUID(req.body.guid)); //save tags for products when use guid for product search
                 const productTags = await FetchProducTags(getProductByGUID(req.body.guid));
                 if ((FetchProductIdResult === undefined) && (productTags === undefined)) {
                     res.status(300).json(`product with GUID: "${req.body.guid}" doesn't exist`);
@@ -145,7 +145,7 @@ class UpdateController {
                             findTagB = '';
                         addTags = newTags + ',' + findTagB;
                     }
-                    const data = updateProduct({
+                    const data = updateProduct({  //add data for product update
                         id: FetchProductIdResult,
                         handle: (req.body.title.replace(/[ ]/g,'-')+'-').toLowerCase()+(req.body.handle).slice(1).slice(-5),
                         title: req.body.title,
@@ -158,7 +158,7 @@ class UpdateController {
 
 
 
-                    fs.appendFile('UPDATE.jsonl', data.toString() + '\n', (err) => {
+                    fs.appendFile('UPDATE.jsonl', data.toString() + '\n', (err) => { //add updated products to file
                         if (err)
                             throw err;
                         else
@@ -172,7 +172,7 @@ class UpdateController {
         }
     };
     async UpdateData(req, res) {
-        const fetchMutationUploadsUpdate = async (args, args1) => {
+        const fetchMutationUploadsUpdate = async (args, args1) => { //send updated product info to shopify
             try {
                 const uploadsResponse = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args))
                     .then(res => res.json())
@@ -189,9 +189,9 @@ class UpdateController {
                 formData.append('policy', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[8].value);
                 formData.append('Content-Type', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[0].value);
                 formData.append('success_action_status', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[1].value);
-                formData.append('file', fs.createReadStream('./UPDATE.jsonl'));
+                formData.append('file', fs.createReadStream('./UPDATE.jsonl')); //file with product data
 
-                const file = await fsPromises.readFile('./UPDATE.jsonl', { encoding: 'utf8' });
+                const file = await fsPromises.readFile('./UPDATE.jsonl', { encoding: 'utf8' }); //check if file is empty
                 if (file.length === 0) {
                     res.status(300).json('File with products is empty');
                 }
@@ -211,7 +211,7 @@ class UpdateController {
                             console.log(error);
                         });
 
-                    const graphqlId = BulkOperationResult.data.bulkOperationRunMutation.bulkOperation.id;
+                    const graphqlId = BulkOperationResult.data.bulkOperationRunMutation.bulkOperation.id; // set event on bulkopration ending
                     eventDataStorage.once(graphqlId, (reqBody) => { res.status(200).json(reqBody); })
                 }
             } catch (e) {
@@ -219,7 +219,7 @@ class UpdateController {
             }
         }
         await fetchMutationUploadsUpdate(stagedUploads(), updateProducts);
-        fs.writeFile('UPDATE.jsonl', '', function () { console.log('File is clear') })
+        fs.writeFile('UPDATE.jsonl', '', function () { console.log('File is clear') }) //clear file
     }
     catch(e) {
         console.log(e);

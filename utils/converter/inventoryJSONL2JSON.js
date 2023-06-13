@@ -3,24 +3,24 @@ const today = new Date();
 
 
 async function convertINVENTORYJSONLtoJSON() {
-    fs.readFile('/Users/Bogdan/Desktop/writeFile/resultData/INVENTORY.jsonl', 'utf-8', (err, jsonInventoryString) => {
+    fs.readFile('/Users/Bogdan/Desktop/writeFile/resultData/INVENTORY.jsonl', 'utf-8', (err, jsonInventoryString) => { //read jsonl file with products
         if (err) {
             console.log(err);
             return;
         }
         let jsonOInventorybject = `[ ${jsonInventoryString.split(/\n/).toString().replace(/\,(?!\s*?[\{\[\"\'\w])/g, '')} ]`;
-        let inventoryObject = JSON.parse(jsonOInventorybject);
+        let inventoryObject = JSON.parse(jsonOInventorybject); //convert to json format
         let inventoryHandle;
         let productTitle;
         let variantIndex = null;
 
-        for (let i = 0; i < inventoryObject.length; i++) {
+        for (let i = 0; i < inventoryObject.length; i++) { //main cycle for all objects in array
             let internalObject = inventoryObject[i];
-            for (let internalObjectProperty in internalObject) {
-                if (Object.keys(internalObject).length === 2 && internalObject['title'] !== undefined) {
+            for (let internalObjectProperty in internalObject) { //second cycle for each key in each object
+                if (Object.keys(internalObject).length === 2 && internalObject['title'] !== undefined) { //check if it's main product
                     productTitle = internalObject['title'];
                 }
-                switch (internalObjectProperty) {
+                switch (internalObjectProperty) {    //check keys and replace data on each iteration
                     case 'id':
                         delete internalObject['id'];
                         break;
@@ -45,7 +45,7 @@ async function convertINVENTORYJSONLtoJSON() {
                 }
 
             }
-            if (internalObject['selectedOptions'] !== undefined) {
+            if (internalObject['selectedOptions'] !== undefined) {  //check if it's variant
                 internalObject['handle'] = inventoryHandle;
                 internalObject['title'] = productTitle;
                 for (let internalObjectProperty in internalObject) {
@@ -82,7 +82,7 @@ async function convertINVENTORYJSONLtoJSON() {
                             delete internalObject['selectedOptions'];
                             break;
                     }
-                }
+                }     //add location for each product and variant object
                 if (variantIndex !== null) {
                     inventoryObject.splice(variantIndex, 1);
                     --i;
@@ -94,7 +94,7 @@ async function convertINVENTORYJSONLtoJSON() {
                 if (variant) {
                     inventoryObject[i] = { ...variant, ...internalObject };
                 }
-            }
+            }   
             if (Object.keys(internalObject).length === 0 || Object.values(internalObject).filter((x) => ![null, undefined, ''].includes(x)).length === 0) {
                 inventoryObject.splice(i, 1);
                 i--;
@@ -110,12 +110,12 @@ async function convertINVENTORYJSONLtoJSON() {
                 return;
             }
             console.log('Data was converted to JSON');
-            // fs.unlink('/Users/Bogdan/Desktop/writeFile/resultData/INVENTORY.jsonl', (err) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            //     console.log('JSONL file was successfully removed');
-            // })
+            fs.unlink('/Users/Bogdan/Desktop/writeFile/resultData/INVENTORY.jsonl', (err) => { //delete last jsonl file
+                if (err) {
+                    console.log(err);
+                }
+                console.log('JSONL file was successfully removed');
+            })
         })
     });
 }

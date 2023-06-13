@@ -1,13 +1,13 @@
-const https = require('https');
-const fetch = require('node-fetch');
-const fs = require('fs');
-const requestStructure = require('./requestOptions/requestOptions');
+const https                  = require('https');
+const fetch                  = require('node-fetch');
+const fs                     = require('fs');
+const requestStructure       = require('./requestOptions/requestOptions');
 const { convertJSONLtoJSON } = require('./converter/productJSONL2JSON');
-const { toCSVconverter } = require('./converter/productJSON2CSV');
+const { toCSVconverter }     = require('./converter/productJSON2CSV');
 const GetProducts = async (bulkMutation, bulkId) => {
     try {
         let url = process.env.shopUrl + `/admin/api/2023-01/graphql.json`;
-        const BulkOperationId = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkMutation))
+        const BulkOperationId = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkMutation)) //get bulk operation id
             .then((response) => {
                 return response.json();
             })
@@ -18,7 +18,7 @@ const GetProducts = async (bulkMutation, bulkId) => {
         const timeOutAction = () => {
             return new Promise((resolve, reject) => {
                 let getLinkInterval = setInterval(async () => {
-                    const BulkOperationLink = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkId(BulkOperationId.data.bulkOperationRunQuery.bulkOperation.id)))
+                    const BulkOperationLink = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkId(BulkOperationId.data.bulkOperationRunQuery.bulkOperation.id))) //get link with products
                         .then((response) => {
                             return response.json();
                         })
@@ -26,7 +26,7 @@ const GetProducts = async (bulkMutation, bulkId) => {
                             console.log(error);
                         });
                     try {
-                        if (BulkOperationLink.data.node.url) {
+                        if (BulkOperationLink.data.node.url) {   //check if link is avaliable
                             resolve(BulkOperationLink.data.node.url);
                             clearInterval(getLinkInterval);
                         }
@@ -42,15 +42,15 @@ const GetProducts = async (bulkMutation, bulkId) => {
         }
         const runPromise = async () => {
             console.log('Waiting for status');
-            const file = fs.createWriteStream("resultData/PRODUCTS.jsonl");
+            const file = fs.createWriteStream("resultData/PRODUCTS.jsonl"); //write products to file
             https.get(await timeOutAction(), function (response) {
                 response.pipe(file);
                 file.on("finish", () => {
                     file.close();
                     console.log("Download Completed");
-                    convertJSONLtoJSON();
+                    convertJSONLtoJSON(); //convert jsonl to json
                     setTimeout(()=>{
-                        toCSVconverter();
+                        toCSVconverter(); //convert json to csv
                     },120000)
                 });
             });

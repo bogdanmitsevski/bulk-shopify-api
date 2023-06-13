@@ -1,9 +1,7 @@
-const https = require('https');
-const fetch = require('node-fetch');
-const fs = require('fs');
+const https            = require('https');
+const fetch            = require('node-fetch');
+const fs               = require('fs');
 const requestStructure = require('./requestOptions/requestOptions');
-const { convertProductMetafields } = require('./converter/productMetaFieldConverter');
-const { convertVariantMetafields } = require('./converter/variantMetaFieldConverter');
 const GetMetafields = async (bulkMutation, bulkId) => {
     try {
         const BulkOperationId = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkMutation))
@@ -47,8 +45,6 @@ const GetMetafields = async (bulkMutation, bulkId) => {
                 file.on("finish", () => {
                     file.close();
                     console.log("Download Completed");
-                    convertProductMetafields();
-                    convertVariantMetafields();
                 });
             });
         };

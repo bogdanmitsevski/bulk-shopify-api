@@ -38,7 +38,7 @@ let accessories_12 = ['Ключниця', 'Ключница', 'Брелок', '�
 function changeTags(tags) {
     let newTags = '';
 
-    switch (true) {
+    switch (true) { //check if tags contains some values
         //clothes =============>
         case clothes_1.some(closthesValue => tags.includes(closthesValue)):
             newTags = tags.replace(clothes_1.find(closthesValue => tags.includes(closthesValue)),'') + ',одежда,белье_и_купальники';

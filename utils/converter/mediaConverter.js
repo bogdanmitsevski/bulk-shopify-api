@@ -1,5 +1,5 @@
-const fs = require('fs');
-const download = require('image-downloader');
+const fs         = require('fs');
+const download   = require('image-downloader');
 const fsPromises = require('fs/promises');
 function downloadImage(url, filepath) {
     return download.image({
@@ -13,9 +13,9 @@ async function downloadMedia() {
     let jsonMediaString = `[ ${mediaString.split(/\n/).toString().replace(/\,(?!\s*?[\{\[\"\'\w])/g, '')} ]`;
     let parsedMediaString = JSON.parse(jsonMediaString);
 
-    for (let i = 0; i < parsedMediaString.length; i++) {
+    for (let i = 0; i < parsedMediaString.length; i++) { //check if object contains media links
         if (Object.keys(parsedMediaString[i]).length === 3) {
-            downloadImage(parsedMediaString[i].preview.image.url, '/Users/Bogdan/Desktop/writeFile/resultData/productPhotos');
+            downloadImage(parsedMediaString[i].preview.image.url, '/Users/Bogdan/Desktop/writeFile/resultData/productPhotos'); //download image in 'productPhotos' directory
         }
     }
     console.log('Download Completed Successfully');

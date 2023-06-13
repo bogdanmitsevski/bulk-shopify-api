@@ -10,13 +10,13 @@ const { changeTags }                                   = require('../utils/chang
 class CreateController {
     async WriteData(req, res) {
         try {
-            for (let i = 0; i < req.body.variants.length; i++) {
+            for (let i = 0; i < req.body.variants.length; i++) { // add variants with same names
                 for (const value of req.body.variants[i].options) {
                     const index = req.body.variants[i].options.indexOf(value);
                     req.body.variants[i].options[index] = value + '⁢'.repeat(i);
                 }
             }
-            let inputTags = (req.body.tags).split(',');
+            let inputTags = (req.body.tags).split(',');           // save tags NEW, SALE
             let staticTags = ['new', 'sale', 'NEW', 'SALE', 'New', 'Sale'];
             let found = inputTags.filter(inputTag => staticTags.includes(inputTag));
             let addTags;
@@ -42,7 +42,7 @@ class CreateController {
             else {
                 addTags = req.body.tags;
             }
-            const getReqBodyData = () => ({
+            const getReqBodyData = () => ({        //get product data from req.body
                 title: req.body.title,
                 handle: (req.body.title.replace(/[ ]/g,'-')+'-').toLowerCase()+(req.body.handle).slice(1).slice(-5),
                 description: req.body.description || '',
@@ -53,7 +53,7 @@ class CreateController {
             });
             let data = createProduct(getReqBodyData());
 
-            fs.appendFile('CREATION.jsonl', data.toString() + '\n', (err) => {
+            fs.appendFile('CREATION.jsonl', data.toString() + '\n', (err) => { //write product to file
                 if (err) throw err;
             })
 
@@ -65,7 +65,7 @@ class CreateController {
     };
     async CreateData(req, res) {
         try {
-            const fetchMutationUploadsCreate = async (args, args1) => {
+            const fetchMutationUploadsCreate = async (args, args1) => { //bulk operation create
                 try {
                     const uploadsResponse = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args))
                         .then(res => res.json())
@@ -81,9 +81,9 @@ class CreateController {
                     formData.append('policy', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[8].value);
                     formData.append('Content-Type', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[0].value);
                     formData.append('success_action_status', uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[1].value);
-                    formData.append('file', fs.createReadStream('./CREATION.jsonl'));
+                    formData.append('file', fs.createReadStream('./CREATION.jsonl'));                 // send file in shopify
 
-                    const file = await fsPromises.readFile('./CREATION.jsonl', { encoding: 'utf8' });
+                    const file = await fsPromises.readFile('./CREATION.jsonl', { encoding: 'utf8' }); // check if file is empty
                     if (file.length === 0) {
                         res.status(300).json('File with products is empty');
                     }
@@ -95,8 +95,7 @@ class CreateController {
                         });
 
                         console.log(sendFileResponse);
-
-                        const BulkOperationResult = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args1(uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[3].value)))
+                        const BulkOperationResult = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args1(uploadsResponse.data.stagedUploadsCreate.stagedTargets[0].parameters[3].value))) //get bulkoperation result
                             .then((response) => {
                                 return response.json();
                             })
@@ -104,14 +103,14 @@ class CreateController {
                                 console.log(error);
                             });
                         const graphqlId = BulkOperationResult.data.bulkOperationRunMutation.bulkOperation.id;
-                        eventDataStorage.once(graphqlId, (reqBody) => { res.status(200).json(reqBody); })
+                        eventDataStorage.once(graphqlId, (reqBody) => { res.status(200).json(reqBody); }) // set event on bulkopration ending
                     }
                 } catch (e) {
                     res.status(300).json(`Check the correctness of the data and input format. Error - ${JSON.stringify(e)}`)
                 }
             }
             await fetchMutationUploadsCreate(stagedUploads(), createProducts);
-            fs.writeFile('CREATION.jsonl', '', function () { console.log('File is clear') })
+            fs.writeFile('CREATION.jsonl', '', function () { console.log('File is clear') }) //clear file
         }
         catch (e) {
             console.log(e);

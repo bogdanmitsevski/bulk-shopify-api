@@ -7,6 +7,7 @@ const webhookRouter = require('./webhookRouter');
 const resultRouter  = require('./resultRouter');
 const checkRouter   = require('./checkRouter');
 const backupRouter  = require('./backupRouter');
+const metafieldRouter = require('./metafieldRouter');
 router.use('/', createRouter);
 router.use('/', updateRouter);
 router.use('/', deleteRouter);
@@ -14,5 +15,6 @@ router.use('/', webhookRouter);
 router.use('/', resultRouter);
 router.use('/', checkRouter);
 router.use('/', backupRouter);
+router.use('/', metafieldRouter);
 
 module.exports = router;

@@ -1,13 +1,13 @@
-const fetch                            = require('node-fetch');
-const requestStructure                 = require('../utils/requestOptions/requestOptions');
-const { getProduct, getProductByGUID } = require('../utils/graphqlRequests/queries');
+const fetch                                  = require('node-fetch');
+const requestStructure                       = require('../utils/requestOptions/requestOptions');
+const { getProduct, getProductByGUID }       = require('../utils/graphqlRequests/queries');
 const { updateProductStatus }                = require('../utils/graphqlRequests/mutations');
 class DeleteController {
     async DeleteData(req, res) {
         try {
-            // функція, яка формує запит до Shopify API на видалення продукту
+            // function that sends to shopfiy query for set DRAFT status for product
             const fetchMutationDelete = async (args) => {
-                // отримання id продукту з query, в який додається sku з JSON шаблона
+                // get product id from bulk operation query
                 let globalData = fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args))
                     .then(res => res.json())
                     .then(response => {
@@ -18,7 +18,7 @@ class DeleteController {
                             res.status(300).json(`Check the correctness of the data and input format. Error - ${JSON.stringify(response)}`);
                         }
                     });
-                // отримання відповіді від Shopify API про видалений продукт
+                // get response from product and edited status
                 fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(updateProductStatus(await globalData)))
                     .then(res => res.json())
                     .then(response => {
@@ -31,9 +31,9 @@ class DeleteController {
                         }
                     });
             };
-            if(req.body.sku)
-                fetchMutationDelete(getProduct(req.body.sku));
-            else
+            if(req.body.sku)  //get product by sku
+                fetchMutationDelete(getProduct(req.body.sku));  
+            else              //get product by sku
                 fetchMutationDelete(getProductByGUID(req.body.guid));
         }
         catch (e) {

@@ -4,7 +4,7 @@ const requestStructure                 = require('../utils/requestOptions/reques
 class CheckController {
     async CheckProduct(req, res) {
         try {
-            const FetchProductId = async (args) => {
+            const FetchProductId = async (args) => { //get product id
                 try {
                     const FindProductId = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args))
                         .then(res => res.json())
@@ -14,11 +14,11 @@ class CheckController {
                     res.json(`Check the correctness of the data and input format. Error - ${JSON.stringify(e)}, Product doesn't exist`)
                 }
             }
-            if (req.body.sku) {
-                await FetchProductId(getProduct(req.body.sku));
+            if (req.body.sku) { //check product by sku
+                await FetchProductId(getProduct(req.body.sku)); 
             }
-            else {
-                await FetchProductId(getProductByGUID(req.body.guid));
+            else { //check product by guid
+                await FetchProductId(getProductByGUID(req.body.guid)); 
             }
         }
         catch (e) {

@@ -1,19 +1,16 @@
-const https = require('https');
-const fs = require('fs');
-const fetch = require('node-fetch');
-const requestStructure = require('../utils/requestOptions/requestOptions');
+const https                                                              = require('https');
+const fs                                                                 = require('fs');
+const fetch                                                              = require('node-fetch');
+const requestStructure                                                   = require('../utils/requestOptions/requestOptions');
 const { getProductInfo, getBulkOperationId, getMedia, getInventoryInfo } = require('../utils/graphqlRequests/queries');
-const { convertINVENTORYJSONLtoJSON } = require('../utils/converter/inventoryJSONL2JSON');
-const { InventorytoCSVconverter } = require('../utils/converter/inventoryJSON2CSV');
-//const { downloadMedia } = require('../utils/converter/mediaConverter');
-const { convertProductMetafields } = require('../utils/converter/productMetaFieldConverter');
-const { convertVariantMetafields } = require('../utils/converter/variantMetaFieldConverter');
+const { convertINVENTORYJSONLtoJSON }                                    = require('../utils/converter/inventoryJSONL2JSON');
+const { InventorytoCSVconverter }                                        = require('../utils/converter/inventoryJSON2CSV');
 
 class BackupController {
     async ProductsBackup(req, res) {
         const GetProducts = async (bulkMutation, bulkId) => {
             try {
-                const BulkOperationId = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkMutation))
+                const BulkOperationId = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkMutation)) // bulk mutation start and getting id
                     .then((response) => {
                         return response.json();
                     })
@@ -24,14 +21,14 @@ class BackupController {
                 const timeOutAction = () => {
                     return new Promise((resolve, reject) => {
                         let getLinkInterval = setInterval(async () => {
-                            const BulkOperationLink = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkId(BulkOperationId.data.bulkOperationRunQuery.bulkOperation.id)))
+                            const BulkOperationLink = await fetch(`https://best-collection-boutique.myshopify.com/admin/api/2023-01/graphql.json`, requestStructure(bulkId(BulkOperationId.data.bulkOperationRunQuery.bulkOperation.id))) //get file url from bulk mutation
                                 .then((response) => {
                                     return response.json();
                                 })
                                 .catch((error) => {
                                     console.log(error);
                                 });
-                            if (BulkOperationLink.data.node.url) {
+                            if (BulkOperationLink.data.node.url) {            //check if link was already created using setInterval
                                 resolve(BulkOperationLink.data.node.url);
                                 clearInterval(getLinkInterval);
                             }
@@ -43,8 +40,8 @@ class BackupController {
                 }
                 const runPromise = async () => {
                     console.log('Waiting for status');
-                    const file = fs.createWriteStream("resultData/INVENTORY.jsonl");
-                    https.get(await timeOutAction(), function (response) {
+                    const file = fs.createWriteStream("resultData/INVENTORY.jsonl");//write data to file
+                    https.get(await timeOutAction(), function (response) { //get file link and download to file
                         response.pipe(file);
                         file.on("finish", () => {
                             file.close();
