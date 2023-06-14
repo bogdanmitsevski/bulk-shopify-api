@@ -16,16 +16,16 @@ const start = async () => {
         app.listen(port, () => {
             app.use('/api', root);
             console.log(`Server is working on port ${port}`);
-            new cron.CronJob('02 12 * * *', () => {              //get products in some time
+            new cron.CronJob('00 12 * * *', () => {              //get products in some time
                 GetProducts(getProductInfo(), getBulkOperationId)
             }).start();
-            new cron.CronJob('57 14 * * *', () => {              //get inventory in some time
+            new cron.CronJob('00 13 * * *', () => {              //get inventory in some time
                 GetInventory(getInventoryInfo(), getBulkOperationId)
             }).start();
-            new cron.CronJob('49 23 * * *', () => {              //get media in some time
+            new cron.CronJob('30 12 * * *', () => {              //get media in some time
                 GetMedia(getMedia(), getBulkOperationId)
             }).start();
-            new cron.CronJob('58 00 * * *', () => {              //get metafields in some time
+            new cron.CronJob('00 15 * * *', () => {              //get metafields in some time
                 GetMetafields(getMetafields(), getBulkOperationId)
             }).start();
         });
