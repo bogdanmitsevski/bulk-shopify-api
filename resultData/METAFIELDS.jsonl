@@ -2908,6 +2908,7 @@
 {"id":"gid:\/\/shopify\/Product\/8391092470046","handle":"celine-блуза-03815"}
 {"id":"gid:\/\/shopify\/Metafield\/29726601806110","namespace":"custom","key":"product_title_en","value":"hello","__parentId":"gid:\/\/shopify\/Product\/8391092470046"}
 {"id":"gid:\/\/shopify\/Metafield\/29726601838878","namespace":"custom","key":"product_type_en","value":"test","__parentId":"gid:\/\/shopify\/Product\/8391092470046"}
+{"id":"gid:\/\/shopify\/Metafield\/29758264574238","namespace":"custom","key":"description_title_en","value":"someTitle","__parentId":"gid:\/\/shopify\/Product\/8391092470046"}
 {"id":"gid:\/\/shopify\/ProductVariant\/45466322600222","sku":"20BY4740105LB.17","__parentId":"gid:\/\/shopify\/Product\/8391092470046"}
 {"id":"gid:\/\/shopify\/Product\/8396933366046","handle":"джинсы-celine11-00011"}
 {"id":"gid:\/\/shopify\/ProductVariant\/45481209397534","sku":"151615fddf463588","__parentId":"gid:\/\/shopify\/Product\/8396933366046"}
@@ -2917,3 +2918,5 @@
 {"id":"gid:\/\/shopify\/ProductVariant\/45481944809758","sku":"151615fddf463588888","__parentId":"gid:\/\/shopify\/Product\/8397228802334"}
 {"id":"gid:\/\/shopify\/ProductVariant\/45481944842526","sku":"16161652fdfdgg","__parentId":"gid:\/\/shopify\/Product\/8397228802334"}
 {"id":"gid:\/\/shopify\/ProductVariant\/45481944875294","sku":"ksdjfbnrvfkewjvnore","__parentId":"gid:\/\/shopify\/Product\/8397228802334"}
+{"id":"gid:\/\/shopify\/Product\/8403343573278","handle":"пиджак-tom-ford-donna-7"}
+{"id":"gid:\/\/shopify\/ProductVariant\/45501002383646","sku":"2000199772113","__parentId":"gid:\/\/shopify\/Product\/8403343573278"}

@@ -1,12 +1,12 @@
-const fs                                                = require('fs');
-const fsPromises                                        = require('fs/promises');
+const fs = require('fs');
+const fsPromises = require('fs/promises');
 const { stagedUploads, updateProducts, updateVariants } = require('../utils/graphqlRequests/mutations');
-const { convertProductMetafields }                      = require('../utils/converter/productMetaFieldConverter');
-const { convertVariantMetafields }                      = require('../utils/converter/variantMetaFieldConverter');
-const requestStructure                                  = require('../utils/requestOptions/requestOptions');
+const { convertProductMetafields } = require('../utils/converter/productMetaFieldConverter');
+const { convertVariantMetafields } = require('../utils/converter/variantMetaFieldConverter');
+const requestStructure = require('../utils/requestOptions/requestOptions');
 
 class MetafieldController {
-    async sendMetafields(req, res) { 
+    async sendMetafields(req, res) {
         const fetchMutationMetafieldsUpdate = async (args, args1, filepath) => {    //create query for updating metafields
             try {
                 const uploadsResponse = await fetch(process.env.shopUrl + `/admin/api/2023-01/graphql.json`, requestStructure(args))
@@ -54,19 +54,30 @@ class MetafieldController {
         }
 
         try {
+            let isProductMetafieldsFinished = false;
+            let isVariantMetafieldsFinished = false;
             setTimeout(async () => { //get product metafields
                 await convertProductMetafields();
                 await fetchMutationMetafieldsUpdate(stagedUploads(), updateProducts, 'resultData/PRODUCT-METAFIELDS.jsonl');
                 await fsPromises.writeFile('resultData/PRODUCT-METAFIELDS.jsonl', '');
-                res.status(200).json('Product Metafields were sent to shopify successfully');
+                isProductMetafieldsFinished = true;
             }, 120000);
 
             setTimeout(async () => { //get variant metafields
                 convertVariantMetafields();
                 await fetchMutationMetafieldsUpdate(stagedUploads(), updateVariants, 'resultData/VARIANT-METAFIELDS.jsonl');
                 await fsPromises.writeFile('resultData/VARIANT-METAFIELDS.jsonl', '');
-                //res.status(200).json('Metafields were sent to shopify successfully');
+                isVariantMetafieldsFinished = true;
             }, 120000);
+            let isMetafieldsReady = setInterval((async () => {
+                if (isProductMetafieldsFinished === true && isVariantMetafieldsFinished === true) {
+                    res.status(200).json('Product Metafields were sent to shopify successfully');
+                    clearInterval(isMetafieldsReady);
+                }
+                else {
+                    console.log('Waiting for metafields uploading');
+                }
+            }), 60000)
         }
         catch (e) {
             res.status(300).json(e || e.message);

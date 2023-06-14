@@ -25,7 +25,7 @@ const start = async () => {
             new cron.CronJob('30 12 * * *', () => {              //get media in some time
                 GetMedia(getMedia(), getBulkOperationId)
             }).start();
-            new cron.CronJob('00 15 * * *', () => {              //get metafields in some time
+            new cron.CronJob('00 15 * * */3', () => {              //get metafields in some time
                 GetMetafields(getMetafields(), getBulkOperationId)
             }).start();
         });
