@@ -16,7 +16,7 @@ const start = async () => {
         app.listen(port, () => {
             app.use('/api', root);
             console.log(`Server is working on port ${port}`);
-            new cron.CronJob('27 11 * * *', () => {              //get products in some time
+            new cron.CronJob('02 12 * * *', () => {              //get products in some time
                 GetProducts(getProductInfo(), getBulkOperationId)
             }).start();
             new cron.CronJob('57 14 * * *', () => {              //get inventory in some time

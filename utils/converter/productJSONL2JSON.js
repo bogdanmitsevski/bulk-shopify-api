@@ -28,7 +28,7 @@ async function convertJSONLtoJSON() {
                             productHandle = subObject['handle'];
                             break;
                         case 'title':
-                            subObject['title'] = `'${subObject['title']}'`;
+                            subObject['title'] = `"${subObject['title']}"`;
                             break;
                         case 'descriptionHtml':
                             subProperty = 'description';
@@ -43,7 +43,7 @@ async function convertJSONLtoJSON() {
                             break;
                         case 'productType':
                             subProperty = 'Type';
-                            subObject['Type'] = subObject['productType'];
+                            subObject['Type'] = `"${subObject['productType']}"`;
                             delete subObject['productType'];
                             break;
                         case 'tags':
