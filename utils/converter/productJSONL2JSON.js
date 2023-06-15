@@ -68,7 +68,7 @@ async function convertJSONLtoJSON() {
                                 let option1Arr = (subObject['options'][0].values).toString().split(',');
                                 if (option1Arr.length > 0) {
                                     subObject['Option1Name'] = (subObject['options'][0].name);
-                                    subObject['Option1Value'] = option1Arr[0];
+                                    subObject['Option1Value'] = `"${option1Arr[0]}"`;
                                 }
                             }
                             //Option2(Name+Value)
@@ -80,7 +80,7 @@ async function convertJSONLtoJSON() {
                                 let option2Arr = (subObject['options'][1].values).toString().split(',');
                                 if (option2Arr.length > 0) {
                                     subObject['Option2Name'] = (subObject['options'][1].name);
-                                    subObject['Option2Value'] = option2Arr[0];
+                                    subObject['Option2Value'] = `"${option2Arr[0]}"`;
                                 }
                             }
                             // // Option3(Name+Value)
@@ -92,7 +92,7 @@ async function convertJSONLtoJSON() {
                                 let option3Arr = (subObject['options'][2].values).toString().split(',');
                                 if (option3Arr.length > 0) {
                                     subObject['Option3Name'] = (subObject['options'][2].name);
-                                    subObject['Option3Value'] = option3Arr[0];
+                                    subObject['Option3Value'] = `"${option3Arr[0]}"`;
                                 }
                             }
                             delete subObject['options'];
@@ -146,19 +146,19 @@ async function convertJSONLtoJSON() {
                     }
                 }
                 if (subObject["selectedOptions"][0] != undefined) {                        //add each option to each value in product variant
-                    subObject["Option1Value"] = subObject["selectedOptions"][0].value;
+                    subObject["Option1Value"] = `"${subObject["selectedOptions"][0].value}"`;
                 }
                 else {
                     subObject["Option1Value"] = '';
                 }
                 if (subObject["selectedOptions"][1] != undefined) {
-                    subObject["Option2Value"] = subObject["selectedOptions"][1].value;
+                    subObject["Option2Value"] = `"${subObject["selectedOptions"][1].value}"`;
                 }
                 else {
                     subObject["Option2Value"] = '';
                 }
                 if (subObject["selectedOptions"][2] != undefined) {
-                    subObject["Option3Value"] = subObject["selectedOptions"][2].value;
+                    subObject["Option3Value"] = `"${subObject["selectedOptions"][2].value}"`;
                     delete subObject["selectedOptions"];
                 }
                 else {
