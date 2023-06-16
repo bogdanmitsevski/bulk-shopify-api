@@ -27,6 +27,7 @@ async function InventorytoCSVconverter() {
         .replaceAll('Option3Value','Option3 Value')
         .replaceAll('VariantSKU','Variant SKU')
         .replaceAll('VariantInventoryQty', 'Variant Inventory Qty')
+        .replaceAll('null', '')
         .replace('harmonizedSystemCode', 'HS Code')
         .replace('countryCodeOfOrigin', 'COO')
         .replace('OnHand', 'On Hand'), (err) => {

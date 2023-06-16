@@ -2,7 +2,7 @@ const https                  = require('https');
 const fetch                  = require('node-fetch');
 const fs                     = require('fs');
 const requestStructure       = require('./requestOptions/requestOptions');
-const { convertJSONLtoJSON } = require('./converter/productJSONL2JSON');
+const { convertJSONLtoJSON } = require('./converter/productJsonl2Json');
 const { toCSVconverter }     = require('./converter/productJSON2CSV');
 const GetProducts = async (bulkMutation, bulkId) => {
     try {

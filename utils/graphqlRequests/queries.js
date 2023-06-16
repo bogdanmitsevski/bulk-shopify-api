@@ -151,7 +151,7 @@ function getInventoryInfo() {
     bulkOperationRunQuery(
       query: """
       {
-        products (first:1, query:"sku:151615fddf463578") {
+        products {
           edges {
             node {
               id,

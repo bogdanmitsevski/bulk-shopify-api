@@ -18,7 +18,7 @@ async function convertINVENTORYJSONLtoJSON() {
             let internalObject = inventoryObject[i];
             for (let internalObjectProperty in internalObject) { //second cycle for each key in each object
                 if (Object.keys(internalObject).length === 2 && internalObject['title'] !== undefined) { //check if it's main product
-                    productTitle = internalObject['title'];
+                    productTitle = `"${internalObject['title']}"`;
                 }
                 switch (internalObjectProperty) {    //check keys and replace data on each iteration
                     case 'id':
@@ -35,7 +35,7 @@ async function convertINVENTORYJSONLtoJSON() {
                         delete internalObject['__parentId'];
                         break;
                     case 'location':
-                        internalObject['Location'] = (internalObject['location'].name).replaceAll('"',"'");
+                        internalObject['Location'] = `"${(internalObject['location'].name).replaceAll('"',"'")}"`;
                         delete internalObject['location'];
                         break;
                     case 'quantities':
@@ -58,7 +58,7 @@ async function convertINVENTORYJSONLtoJSON() {
                             }
                             else {
                                 internalObject['Option1Name'] = (internalObject['selectedOptions'][0].name);
-                                internalObject['Option1Value'] = (internalObject['selectedOptions'][0].value);
+                                internalObject['Option1Value'] = `"${(internalObject['selectedOptions'][0].value)}"`;
                                 // }
                             }
                             //Option2(Name+Value)
@@ -68,7 +68,7 @@ async function convertINVENTORYJSONLtoJSON() {
                             }
                             else {
                                 internalObject['Option2Name'] = (internalObject['selectedOptions'][1].name);
-                                internalObject['Option2Value'] = (internalObject['selectedOptions'][1].value);
+                                internalObject['Option2Value'] = `"${(internalObject['selectedOptions'][1].value)}"`;
                             }
                             // // Option3(Name+Value)
                             if (internalObject['selectedOptions'][2] === undefined) {
@@ -77,7 +77,7 @@ async function convertINVENTORYJSONLtoJSON() {
                             }
                             else {
                                 internalObject['Option3Name'] = (internalObject['selectedOptions'][2].name);
-                                internalObject['Option3Value'] = (internalObject['selectedOptions'][2].value);
+                                internalObject['Option3Value'] = `"${(internalObject['selectedOptions'][2].value)}"`;
                             }
                             delete internalObject['selectedOptions'];
                             break;
