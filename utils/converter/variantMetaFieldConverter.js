@@ -16,7 +16,7 @@ const FetchProductVariantBySKU = async (args) => {
 }
 
 async function convertVariantMetafields() {
-    const variantString = await fsPromises.readFile('/Users/Bogdan/Desktop/writeFile/resultData/METAFIELDS.jsonl', 'utf-8'); //read jsonl file with metafields
+    const variantString = await fsPromises.readFile('resultData/METAFIELDS.jsonl', 'utf-8'); //read jsonl file with metafields
     let jsonString = `[ ${variantString.split(/\n/).toString().replace(/\,(?!\s*?[\{\[\"\'\w])/g, '')} ]`;
     let parsedString = JSON.parse(jsonString); //convert to json
     let currentVariantId;

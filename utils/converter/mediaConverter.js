@@ -9,13 +9,13 @@ function downloadImage(url, filepath) {
 }
 
 async function downloadMedia() {
-    const mediaString = await fsPromises.readFile('/Users/Bogdan/Desktop/writeFile/resultData/MEDIA.jsonl', 'utf-8');
+    const mediaString = await fsPromises.readFile('resultData/MEDIA.jsonl', 'utf-8');
     let jsonMediaString = `[ ${mediaString.split(/\n/).toString().replace(/\,(?!\s*?[\{\[\"\'\w])/g, '')} ]`;
     let parsedMediaString = JSON.parse(jsonMediaString);
 
     for (let i = 0; i < parsedMediaString.length; i++) { //check if object contains media links
         if (Object.keys(parsedMediaString[i]).length === 3) {
-            downloadImage(parsedMediaString[i].preview.image.url, '/Users/Bogdan/Desktop/writeFile/resultData/productPhotos'); //download image in 'productPhotos' directory
+            downloadImage(parsedMediaString[i].preview.image.url, '../../resultData/productPhotos'); //download image in 'productPhotos' directory
         }
     }
     console.log('Download Completed Successfully');

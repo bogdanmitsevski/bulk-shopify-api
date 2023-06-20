@@ -2,7 +2,7 @@ const fs = require('fs');
 
 
 async function convertJSONLtoJSON() {
-    fs.readFile('/Users/Bogdan/Desktop/writeFile/resultData/PRODUCTS.jsonl', 'utf-8', (err, jsonString) => { //read file with products
+    fs.readFile('resultData/PRODUCTS.jsonl', 'utf-8', (err, jsonString) => { //read file with products
         if (err) {
             console.log(err);
             return;
@@ -191,13 +191,13 @@ async function convertJSONLtoJSON() {
             delete subObject['__type__'];
 
         }
-        fs.writeFile('/Users/Bogdan/Desktop/writeFile/resultData/PRODUCTS.json', JSON.stringify(object, null, 2), 'utf-8', (err) => { //write result(converted JSON)
+        fs.writeFile('resultData/PRODUCTS.json', JSON.stringify(object, null, 2), 'utf-8', (err) => { //write result(converted JSON)
             if (err) {
                 console.log(err);
                 return;
             }
             console.log('Data was converted to JSON');
-            fs.unlink('/Users/Bogdan/Desktop/writeFile/resultData/PRODUCTS.jsonl', (err) => { //delete last jsonl file
+            fs.unlink('resultData/PRODUCTS.jsonl', (err) => { //delete last jsonl file
                 if (err) {
                     console.log(err);
                 }

@@ -4,7 +4,7 @@ const today   = new Date();
 
 async function toCSVconverter() {
 
-    fs.readFile('/Users/Bogdan/Desktop/writeFile/resultData/PRODUCTS.json', 'utf-8', (err, fileContent) => { //read json file before converting
+    fs.readFile('resultData/PRODUCTS.json', 'utf-8', (err, fileContent) => { //read json file before converting
         if (err) {
             console.log(err);
             throw new Error(err);
@@ -16,7 +16,7 @@ async function toCSVconverter() {
             wrap: false
         });
 
-        fs.writeFile(`/Users/Bogdan/Desktop/writeFile/resultData/products_backup_${today.toLocaleDateString()}.csv`, //result file creation
+        fs.writeFile(`products_backup_${today.toLocaleDateString()}.csv`, //result file creation
         csvData                                                         //replace columns name according to shopify standards
         .replaceAll(';;',',')
         .replaceAll('Option1Name','Option1 Name')
@@ -41,7 +41,7 @@ async function toCSVconverter() {
                 throw new Error(err);
             }
             console.log('JSON was converted in CSV successfully');
-            fs.unlink('/Users/Bogdan/Desktop/writeFile/resultData/PRODUCTS.json', (err) => { //delete last json file
+            fs.unlink('resultData/PRODUCTS.json', (err) => { //delete last json file
                 if(err) {
                     console.log(err);
                 }

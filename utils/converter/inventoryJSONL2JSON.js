@@ -3,7 +3,7 @@ const today = new Date();
 
 
 async function convertINVENTORYJSONLtoJSON() {
-    fs.readFile('/Users/Bogdan/Desktop/writeFile/resultData/INVENTORY.jsonl', 'utf-8', (err, jsonInventoryString) => { //read jsonl file with products
+    fs.readFile('resultData/INVENTORY.jsonl', 'utf-8', (err, jsonInventoryString) => { //read jsonl file with products
         if (err) {
             console.log(err);
             return;
@@ -104,13 +104,13 @@ async function convertINVENTORYJSONLtoJSON() {
         inventoryObject.splice(variantIndex, 1);
 
 
-        fs.writeFile('/Users/Bogdan/Desktop/writeFile/resultData/INVENTORY.json', JSON.stringify(inventoryObject, null, 2), 'utf-8', (err) => {
+        fs.writeFile('resultData/INVENTORY.json', JSON.stringify(inventoryObject, null, 2), 'utf-8', (err) => {
             if (err) {
                 console.log(err);
                 return;
             }
             console.log('Data was converted to JSON');
-            fs.unlink('/Users/Bogdan/Desktop/writeFile/resultData/INVENTORY.jsonl', (err) => { //delete last jsonl file
+            fs.unlink('resultData/INVENTORY.jsonl', (err) => { //delete last jsonl file
                 if (err) {
                     console.log(err);
                 }

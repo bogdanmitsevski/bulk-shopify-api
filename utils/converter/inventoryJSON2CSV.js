@@ -4,7 +4,7 @@ const today   = new Date();
 
 async function InventorytoCSVconverter() {
 
-    fs.readFile('/Users/Bogdan/Desktop/writeFile/resultData/INVENTORY.json', 'utf-8', (err, fileContent) => { //read json file before converting
+    fs.readFile('resultData/INVENTORY.json', 'utf-8', (err, fileContent) => { //read json file before converting
         if (err) {
             console.log(err);
             throw new Error(err);
@@ -16,7 +16,7 @@ async function InventorytoCSVconverter() {
             wrap: false
         });
 
-        fs.writeFile(`/Users/Bogdan/Desktop/writeFile/resultData/inventory_backup_${today.toLocaleDateString()}.csv`, //result file creation
+        fs.writeFile(`resultData/inventory_backup_${today.toLocaleDateString()}.csv`, //result file creation
         csvData
         .replaceAll(';;',',')                            //replace columns name according to shopify standards
         .replaceAll('Option1Name','Option1 Name')
@@ -36,7 +36,7 @@ async function InventorytoCSVconverter() {
                 throw new Error(err);
             }
             console.log('JSON was converted in CSV successfully');
-            fs.unlink('/Users/Bogdan/Desktop/writeFile/resultData/INVENTORY.json', (err) => { //delete last JSON file
+            fs.unlink('resultData/INVENTORY.json', (err) => { //delete last JSON file
                 if(err) {
                     console.log(err);
                 }

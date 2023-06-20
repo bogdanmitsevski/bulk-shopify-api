@@ -14,7 +14,7 @@ const FetchProductByHandle   = async (args) => {
     }
 }
 async function convertProductMetafields() {
-    const productString = await fsPromises.readFile('/Users/Bogdan/Desktop/writeFile/resultData/METAFIELDS.jsonl', 'utf-8'); //read jsonl file with metafields
+    const productString = await fsPromises.readFile('resultData/METAFIELDS.jsonl', 'utf-8'); //read jsonl file with metafields
     let jsonString = `[ ${productString.split(/\n/).toString().replace(/\,(?!\s*?[\{\[\"\'\w])/g, '')} ]`;
     let parsedString = JSON.parse(jsonString); //convert to json
     let currentProductId;
