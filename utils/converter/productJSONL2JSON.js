@@ -32,8 +32,9 @@ async function convertJSONLtoJSON() {
                             break;
                         case 'descriptionHtml':
                             subProperty = 'description';
-                            let singleQuoteString = (subObject['descriptionHtml']).replaceAll('"', "'");
-                            subObject['description'] = `"${singleQuoteString}"`;
+                            let singleQuoteString = subObject['descriptionHtml']
+                            let withoutSingleQuoteString = singleQuoteString.replaceAll('"', "'");
+                            subObject['description'] = `"${withoutSingleQuoteString}"`;
                             delete subObject['descriptionHtml'];
                             break;
                         case 'status':

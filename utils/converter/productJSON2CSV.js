@@ -16,7 +16,7 @@ async function toCSVconverter() {
             wrap: false
         });
 
-        fs.writeFile(`products_backup_${today.toLocaleDateString()}.csv`, //result file creation
+        fs.writeFile(`resultData/products_backup_${today.toLocaleDateString()}.csv`, //result file creation
         csvData                                                         //replace columns name according to shopify standards
         .replaceAll(';;',',')
         .replaceAll('Option1Name','Option1 Name')

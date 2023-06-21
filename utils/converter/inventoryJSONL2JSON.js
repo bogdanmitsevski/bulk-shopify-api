@@ -35,7 +35,9 @@ async function convertINVENTORYJSONLtoJSON() {
                         delete internalObject['__parentId'];
                         break;
                     case 'location':
-                        internalObject['Location'] = `"${(internalObject['location'].name).replaceAll('"',"'")}"`;
+                        let locationName = internalObject['location'].name;
+                        let singleQouteName = locationName.replaceAll('"',"'");
+                        internalObject['Location'] = `"${singleQouteName}"`;
                         delete internalObject['location'];
                         break;
                     case 'quantities':
